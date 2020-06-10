@@ -8,24 +8,17 @@ namespace TAProject1
 {
     class Home
     {
-        private IWebDriver driver;
-
-        public Home(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
 
         //Click Administration 
-        internal void ClickAdministration()
+        internal void ClickAdministration(IWebDriver driver)
         {
-            Assert.That(driver.FindElement(By.XPath("//a[@href='#'][contains(.,'Administration')]")).Text, Is.EqualTo("Administration"));
-            
+            Assert.That(driver.FindElement(By.XPath("//a[@href='#'][contains(.,'Administration')]")).Text, Is.EqualTo("Administration"));            
             //Click action on Administration
             driver.FindElement(By.XPath("//a[@href='#'][contains(.,'Administration')]")).Click();
         }
 
         //Click Time and Material
-        internal void ClickTimeAndMaterials()
+        internal void ClickTimeAndMaterials(IWebDriver driver)
         {
             Assert.That(driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a")).Text, Is.EqualTo("Time & Materials"));
 

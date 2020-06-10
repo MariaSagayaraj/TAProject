@@ -11,40 +11,36 @@ namespace TAProject1
 
     internal class Login
     {
-        private IWebDriver driver;
-
-        IWebElement UserName => driver.FindElement(By.XPath(("//*[@id='UserName']")));
-        IWebElement Password => driver.FindElement(By.XPath("//*[@id='Password']"));
-        IWebElement LoginBtn => driver.FindElement(By.XPath("//input[@type='submit']"));
-
-
-        public Login(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
-
-        public void LoginSuccess()
+        public void LoginSuccess(IWebDriver driver)
         {
             driver.Navigate().GoToUrl("http://horse-dev.azurewebsites.net/Account/Login?ReturnUrl=%2f");
-
-            driver.Manage().Window.Maximize();
+           Assert.AreEqual("Log In", driver.FindElement(By.XPath("//*[@id='loginForm']/form/h2")).Text);
+           // driver.Manage().Window.Maximize();
             // enter hari as username
-            UserName.SendKeys("hari");
+            driver.FindElement(By.XPath(("//*[@id='UserName']"))).SendKeys("hari");
             //identfying password & sending password
-            Password.SendKeys("123123");
+            driver.FindElement(By.XPath("//*[@id='Password']")).SendKeys("123123");
             //clicked login btn
-            LoginBtn.Click();
+            driver.FindElement(By.XPath("//input[@type='submit']")).Click();
         }
 
-        public void VerifyTitle()
+        //public void VerifyTitle(IWebDriver driver)
+        //{
+        //    String ActualTitle = driver.Title;
+        //    String ExpectedTitle = "Dashboard - Dispatching System";
+        //    Assert.AreEqual(ActualTitle, ExpectedTitle);
+        //    Console.WriteLine("passed");
+        //    Console.ReadLine();
+        //}
+
+        public void Loginfailure(IWebDriver driver)
         {
-            String ActualTitle = driver.Title;
-            String ExpectedTitle = "Log In - Dispatching System";
-            Assert.AreEqual(ActualTitle, ExpectedTitle);
-            Console.WriteLine("passed");
-            Console.ReadLine();
-        }
+            //Identify username and enter user name as hari
+            driver.FindElement(By.XPath("//*[@id='UserName']")).SendKeys("hari");
 
+            //identfying password & sending password
+            driver.FindElement(By.XPath("//*[@id='Password']")).SendKeys("123123");
+        }
     }
 }
 

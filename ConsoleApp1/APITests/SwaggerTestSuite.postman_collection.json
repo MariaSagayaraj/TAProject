@@ -1,0 +1,494 @@
+{
+	"info": {
+		"_postman_id": "730d8f53-6905-42a5-8a7e-ec2c8015f1e0",
+		"name": "Swagger Test Suite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SwaggerPractice1",
+			"item": [
+				{
+					"name": "Create Pet",
+					"item": [
+						{
+							"name": "Create Pet using valid details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f19fc9d1-8531-4a28-8bf7-f08977799e0c",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Your test name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.name).to.eql(\"Julie1\");\r",
+											"    \r",
+											"pm.environment.set(\"pet_id\", jsonData.id);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1000,\n    \"category\": {\n        \"id\": 0,\n        \"name\": \"string\"\n    },\n    \"name\": \"Julie1\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"string\"\n        }\n    ],\n    \"status\": \"available\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pet",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Pet using null details",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\",\n    \"category\": {\n        \"id\": 0,\n        \"name\": \"string\"\n    },\n    \"name\": \"\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"string\"\n        }\n    ],\n    \"status\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pet",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Pet using no request body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4155ed08-9ee6-4ba1-9967-22d10b2c8590",
+										"exec": [
+											"pm.test(\"There is an error ! Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(415);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Update Pet",
+					"item": [
+						{
+							"name": "Update Pet with valid ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "15f7e2c0-9f1b-4731-9b85-f19f0858c426",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Your test name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.name).to.eql(\"Julie2\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1000,\n    \"category\": {\n        \"id\": 0,\n        \"name\": \"string\"\n    },\n    \"name\": \"Julie2\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"string\"\n        }\n    ],\n    \"status\": \"unavailable\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pet?={{pet_id}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "{{pet_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update pet with no ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "64d9a360-46c9-4fa9-86c2-13a2e9450a80",
+										"exec": [
+											"pm.test(\"Error :No Pet ID is provided. Status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"pm.test(\"Body matches string - unknown\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"unknown\");\r",
+											"});\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet/:",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Pet with invalid ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4ace16f1-6c27-42e5-aed1-1c837de722c6",
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Your test name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"bad input\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": abcd,\n    \"category\": {\n        \"id\": 0,\n        \"name\": \"string\"\n    },\n    \"name\": \"dog\",\n    \"photoUrls\": [\n        \"string\"\n    ],\n    \"tags\": [\n        {\n            \"id\": 0,\n            \"name\": \"string\"\n        }\n    ],\n    \"status\": \"available\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pet/:abcd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":abcd"
+									],
+									"variable": [
+										{
+											"key": "abcd",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Pet with no request body ",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "735343f1-a922-4821-a37e-2f3378ac0d14",
+										"exec": [
+											"pm.test(\"No request Body provided. Status code is 415\", function () {\r",
+											"    pm.response.to.have.status(415);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet/:petId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":petId"
+									],
+									"variable": [
+										{
+											"key": "petId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "View Pet",
+					"item": [
+						{
+							"name": "View Pet using valid pet id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet/:petId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":petId"
+									],
+									"variable": [
+										{
+											"key": "petId",
+											"value": "{{pet_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Pet using no pet id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7846abef-f786-4d99-b29e-71ed4a718668",
+										"exec": [
+											"pm.test(\"No pet id is provided. Status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet/:pet",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":pet"
+									],
+									"variable": [
+										{
+											"key": "pet",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete Pet",
+					"item": [
+						{
+							"name": "Delete a pet with valid pet id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "70a786a9-5d9c-4e30-8748-b1586963a7f7",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Your test name\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"1000\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet/:petId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet",
+										":petId"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "petId",
+											"value": "{{pet_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a pet with no pet id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "09878978-c73e-4828-97dd-8be02dc3531c",
+										"exec": [
+											"pm.test(\"Status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pet",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pet"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "68a984d3-8f49-490e-9e20-821f6b72618e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7b055112-898d-48c0-9463-0bcac7a89e14",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "985ac025-f66a-47e0-90b3-1b3fa3f3685e",
+			"key": "baseUrl",
+			"value": "petstore.swagger.io/v2",
+			"type": "string",
+			"disabled": true
+		}
+	],
+	"protocolProfileBehavior": {}
+}

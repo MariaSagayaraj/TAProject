@@ -3,92 +3,68 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Threading;
+using TAProject1.Helpers;
 using TechTalk.SpecFlow;
 
 namespace TAProject1.HookUp
 {
     [Binding]
-    public class TimeandMaterialSteps
-        
+    public class TimeandMaterialSteps : CommonDriver
     {
-        IWebDriver driver;
-
         [Given(@"I have logged into the Turnup portal successfully")]
         public void GivenIHaveLoggedIntoTheTurnupPortalSuccessfully()
         {
             //Basic login code
             driver = new ChromeDriver();
             //Creating instance of Login Page
-            Login loginpage = new Login(driver);
-            loginpage.LoginSuccess();
-        }
+            Login loginpage = new Login();
+            loginpage.LoginSuccess(driver);
 
-        [Given(@"Verify the title of the page")]
-        public void GivenVerifyTheTitleOfThePage()
-        {
-            String ActualTitle = driver.Title;
-            String ExpectedTitle = "Log In - Dispatching System";
-            Assert.AreEqual(ActualTitle, ExpectedTitle);
-            Console.WriteLine("passed");
-            Console.ReadLine();
-        }
-
-        [Given(@"I create a time and material")]
-        public void GivenICreateATimeAndMaterial()
-        {
             //Creating instance of home page
-            Home homepage = new Home(driver);
-            homepage.ClickAdministration();
-            homepage.ClickTimeAndMaterials();
-            //Creating instance of time and material
-            TimeMaterial timematerial = new TimeMaterial(driver);
-            timematerial.ClickCreatenew();
-            timematerial.CreateNewRecord("code", "description");
+            Home homepage = new Home();
+            homepage.ClickAdministration(driver);
+            homepage.ClickTimeAndMaterials(driver);
 
-            timematerial.ValidateNewRecord("code", "description");
         }
-       
-        [Then(@"the record should be created successfully")]
-        public void ThenTheRecordShouldBeCreatedSuccessfully()
+
+        [Given(@"I create a new Time and Material record")]
+        public void GivenICreateANewTimeAndMaterialRecord()
         {
-            Thread.Sleep(1000);
-            driver.Close();
+
+            //Creating instance of time and material
+            TimeMaterial timematerial = new TimeMaterial();
+            timematerial.ClickCreatenew();
+            timematerial.CreateNewRecord("jack1", "jack1Desc");
+            timematerial.ValidateNewRecord("jack1", "jack1Desc");
         }
-        [Given(@"I edit an existing time and material record")]
+
+        [Given(@"I edit an existing Time and Material record")]
         public void GivenIEditAnExistingTimeAndMaterialRecord()
         {
-            Home homepage = new Home(driver);
-            homepage.ClickAdministration();
-            homepage.ClickTimeAndMaterials();
-            TimeMaterial timematerial = new TimeMaterial(driver);
+            TimeMaterial timematerial = new TimeMaterial();
             timematerial.EditNewRecord();
-
         }
-        [Then(@"the record should be edited successfully")]
+
+        [Given(@"I create a new Time and Material with below (.*),(.*)")]
+        public void GivenICreateANewTimeAndMaterialWithBelowTestdec(string p0, string p1)
+        {
+            //Creating instance of time and material
+            TimeMaterial timematerial = new TimeMaterial();
+            timematerial.ClickCreatenew();
+            timematerial.CreateNewRecord(p0, p1);
+            timematerial.ValidateNewRecord(p0, p1);
+        }
+
+        [Then(@"The record should be created successfully")]
+        public void ThenTheRecordShouldBeCreatedSuccessfully()
+        {
+            driver.Close();
+        }
+
+        [Then(@"The record should be edited successfully")]
         public void ThenTheRecordShouldBeEditedSuccessfully()
         {
-            
-            TimeMaterial timematerial = new TimeMaterial(driver);
-            timematerial.ValidateNewRecord();
-            driver.Quit();
+            driver.Close();
         }
-
-        [Given(@"I create a time and material record with below (.*)")]
-        public void GivenICreateATimeAndMaterialRecordWithBelow(string p0, string p1)
-        {
-            //Creating instance of home page
-            Home homepage = new Home(driver);
-            homepage.ClickAdministration();
-            homepage.ClickTimeAndMaterials();
-            //Creating instance of time and material
-            TimeMaterial timematerial = new TimeMaterial(driver);
-            timematerial.ClickCreatenew();
-            timematerial.CreateNewRecord(p0,p1);
-
-            timematerial.ValidateNewRecord("code", "description");
-
-        }
-
-
     }
 }
